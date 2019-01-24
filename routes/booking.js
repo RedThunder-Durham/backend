@@ -16,10 +16,10 @@ router.post('/', (req, res) => {
     };
 
     // sanity checks
-    // TODO: check duration here and also closing times
     if (!start.isAfter(moment())
         || !end.isAfter(start)
         || end.diff(start, 'days') > 0
+        || start.diff(moment(), 'days') > 31
         || !details.name
         || !details.phone_number
         || !venue
@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
     }
 
     // TODO: price lists
-    const duration = moment.duration(end.diff(start)).hours();
+    const duration = end.diff(start, 'minutes') / 30;
     const price = (10 * duration).toString() + ".00";
 
     const start_date = utils.momentToCalendarDate(start);
@@ -57,7 +57,7 @@ router.post('/', (req, res) => {
             if (err) throw err;
             if (event) return res.status(400).end();
             // ok, lock + redirect to payment
-            paypal.create_payment(`${venue} (${duration} hours)`, price, (err, payment, info) => {
+            paypal.create_payment(`${venue} (${duration/2} hours)`, price, (err, payment, info) => {
                 if (err) throw err;
                 calendar.addLock(calendar.auth, {
                     start:   {dateTime: start_date, timeZone: 'Europe/London'},

@@ -11,8 +11,15 @@ function clientDateToMoment(s) {
     if (!m.isValid()) {
         throw new Error("invalid date!");
     }
-    // round to nearest hour
-    return m.startOf('hour');
+    // round to nearest half-hour
+    return roundToHalfHour(m);
+}
+
+
+function roundToHalfHour(m) {
+    const remainder = 30 - (m.minute() % 30);
+    m.add(remainder, "minutes");
+    return m;
 }
 
 
