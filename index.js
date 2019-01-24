@@ -3,6 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const app = express();
 const calendar = require('./calendarAPI.js');
+
 // logging
 app.use(morgan('dev'));
 app.use(express.json());
@@ -21,10 +22,11 @@ render_page('/', 'index');
 render_page('/about-us', 'about-us');
 render_page('/contact-us', 'contact-us');
 render_page('/calendar', 'testcalendar');
-
+render_page('/gdpr-notice', 'gdpr-notice');
 app.use('/contact-us', require('./routes/contact-us'));
 app.use('/paypal', require('./routes/paypal'));
 app.use('/facilities', require('./routes/facilities'));
 app.use('/whats-on', require('./routes/whats-on'));
+app.use('/booking',  require('./routes/booking'));
 
 app.listen(8080, () => {});
