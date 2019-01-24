@@ -17,8 +17,8 @@ function clientDateToMoment(s) {
 
 
 function roundToHalfHour(m) {
-    const remainder = 30 - (m.minute() % 30);
-    m.add(remainder, "minutes");
+    const remainder = m.minute() % 30;
+    m.subtract(remainder, "minutes");
     return m;
 }
 
